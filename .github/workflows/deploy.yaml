@@ -1,0 +1,18 @@
+name: test
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+    steps:
+    - name: repo-checkout
+      uses: actions/checkout@v2
+    - id: 'secrets'
+      name: secrets-provisioning
+      uses: google-github-actions/get-secretmanager-secrets@v0.2.2
+      with:
+        credentials: ${{ secrets.GOOGLE_CREDENTIALS_DBC_DEV }}
+        secrets: |-
+          artifactory_release_username:${{ env.GCP_PROJECT }}/test
