@@ -26,4 +26,7 @@ jobs:
       with:
         secrets: |-
           token:terraform-cource/test
+    - id: 'list-buckets-contents'
+      run: |-
+        gcloud iam service-accounts list
 
