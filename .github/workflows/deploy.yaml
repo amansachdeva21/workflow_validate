@@ -16,3 +16,4 @@ jobs:
         credentials: ${{ secrets.GOOGLE_CREDENTIALS_DBC_DEV }}
         secrets: |-
           artifactory_release_username:${{ env.GCP_PROJECT }}/test
+
