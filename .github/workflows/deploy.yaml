@@ -12,10 +12,10 @@ jobs:
     steps:
     - name: repo-checkout
       uses: actions/checkout@v2
-    - id: 'secrets'
-      uses: google-github-actions/get-secretmanager-secrets@v0.2.2
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v1'
       with:
-        credentials: ${{ secrets.GOOGLE_CREDENTIALS_DBC_DEV }}
-        secrets: |-
-          artifactory_release_username:${{ env.GCP_PROJECT }}/test
+        workload_identity_provider: 'projects/705873723436/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
+        service_account: ${{secrets.SA_EMAIL}}
 
