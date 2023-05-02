@@ -29,4 +29,3 @@ jobs:
     - id: 'list-sa'
       run: |-
         gcloud iam service-accounts list
-
