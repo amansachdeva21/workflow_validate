@@ -11,3 +11,29 @@ on:
         description: 'Define branch name'     
         required: true
         default: 'master'
+
+jobs:
+  job_id:
+    permissions:
+     contents: 'read'
+     id-token: 'write'
+    runs-on: ubuntu-latest
+    name: Check licenses
+    steps:
+    - name: repo-checkout
+      uses: actions/checkout@v2
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v1'
+      with:
+        workload_identity_provider: 'projects/705873723436/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
+        service_account: ${{secrets.SA_EMAIL}}
+    - id: 'secrets'
+      uses: 'google-github-actions/get-secretmanager-secrets@v1'
+      with:
+        secrets: |-
+          token:terraform-cource/test
+    - id: 'list-sa'
+      run: |-
+        gcloud iam service-accounts list
+Rename
