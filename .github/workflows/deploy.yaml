@@ -21,11 +21,6 @@ jobs:
       with:
         workload_identity_provider: 'projects/152371190637/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
         service_account: ${{secrets.SA_EMAIL}}
-    - id: 'secrets'
-      uses: 'google-github-actions/get-secretmanager-secrets@v1'
-      with:
-        secrets: |-
-          token:refreshing-oven-432114-i0/test
     - id: 'list-sa'
       run: |-
         gcloud iam service-accounts list
