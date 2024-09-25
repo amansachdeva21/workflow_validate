@@ -19,7 +19,7 @@ jobs:
       name: 'Authenticate to Google Cloud'
       uses: 'google-github-actions/auth@v1'
       with:
-        workload_identity_provider: 'projects/705873723436/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
+        workload_identity_provider: 'projects/152371190637/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
         service_account: ${{secrets.SA_EMAIL}}
     - id: 'secrets'
       uses: 'google-github-actions/get-secretmanager-secrets@v1'
