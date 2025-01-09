@@ -10,6 +10,7 @@ on:
   
 jobs:
   greet:
+    environment: test
     runs-on: ubuntu-latest
 
     steps:
