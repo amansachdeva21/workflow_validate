@@ -15,4 +15,4 @@ jobs:
 
     steps:
     - name: Send greeting
-      run: echo "test"
+      run: echo ${{ github.workflow_id }}/${{ github.run_number }}
