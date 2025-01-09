@@ -1,0 +1,17 @@
+name: file update run
+
+on:
+  workflow_call:
+  push:
+    branches:
+      - file_update
+    paths:
+      - 'test/**'
+  
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Send greeting
+      run: echo "test"
