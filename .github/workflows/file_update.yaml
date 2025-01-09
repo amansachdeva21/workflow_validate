@@ -15,4 +15,6 @@ jobs:
 
     steps:
     - name: Send greeting
-      run: echo ${{ github.workflow_id }}/${{ github.run_number }}
+      run: echo ${{github.workflow_id}}/${{github.run_id}}/{{github.workflow_ref}}
+
+
