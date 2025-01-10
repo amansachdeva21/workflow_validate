@@ -11,4 +11,4 @@ jobs:
           echo ${{github.workflow_ref}}
           workflow_ref=${{github.workflow_ref}}
           echo "test1@test2" | awk -F "@" '{print $2}'
-          echo $workflow_ref | awk -F "/" '{print $2}'
+          echo $workflow_ref | awk -F "/" '{print $5}'
