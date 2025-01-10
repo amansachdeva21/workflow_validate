@@ -6,7 +6,7 @@ jobs:
   github-context:
     name: job-context
     runs-on: ubuntu-latest
-    steps:
+    jobs:
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
@@ -35,7 +35,7 @@ jobs:
 # Testing comment on https://stackoverflow.com/questions/67503656/echo-github-action-environment-variables/67504712?noredirect=1#comment134718086_67504712
   context-variables:
     runs-on: ubuntu-latest
-    steps:
+    jobs:
       - run: |
           echo "GITHUB_REPOSITORY_OWNER: $GITHUB_REPOSITORY_OWNER"
           echo "GITHUB_REPOSITORY: $GITHUB_REPOSITORY"
