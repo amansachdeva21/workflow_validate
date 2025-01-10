@@ -9,6 +9,6 @@ jobs:
       - name: Use the output run ID and URL
         run: |
           #echo ${{github.workflow_ref}}
-          workflow_ref=${{github.workflow_ref}} | awk -F "/" '{print $5}' | awk -F "@" '{print $1}'
-          echo $workflow_ref
+          ${{github.workflow_ref}} | awk -F "/" '{print $5}' | awk -F "@" '{print $1}'
+          #echo $workflow_ref
           #echo ${{github.workflow_ref}} | awk -F "/" '{print $5}' | awk -F "@" '{print $1}'
