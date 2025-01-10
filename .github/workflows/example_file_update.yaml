@@ -8,5 +8,7 @@ jobs:
     steps:
       - name: Use the output run ID and URL
         run: |
-          echo ${{ github.workflow }}
-          RUN_ID=$(gh run list --json databaseId --workflow=example_file_update.yaml --limit 1 | jq -r '.[0].databaseId')
+          echo ${{github.workflow_ref}}
+          workflow_ref=${{github.workflow_ref}}
+          echo "test1@test2" | awk -F "@" '{print $2}'
+          echo $workflow_ref | awk -F "/" '{print $2}'
