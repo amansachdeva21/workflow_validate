@@ -12,7 +12,7 @@ jobs:
         with:
           token: ${{ secrets.token }} # Note this is NOT GITHUB_TOKEN but a PAT
           ref: target_branch # or refs/heads/target_branch
-          repo: workflow_validate
+          repo: file_update
           owner: amansachdeva21
           workflow: example_file_update.yaml
           workflow_inputs: '{ "some_input": "value" }' # Optional
