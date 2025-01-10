@@ -2,7 +2,7 @@ name: 24 - Github Context
 
 on: [workflow_dispatch, push, pull_request, issues, deployment_status]
 
-steps:
+jobs:
   github-context:
     name: job-context
     runs-on: ubuntu-latest
