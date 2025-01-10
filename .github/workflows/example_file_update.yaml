@@ -37,5 +37,4 @@ jobs:
               fi
             fi
           done
-
       #curl -u amansachdeva21:${{ secrets.token }} https://api.github.com/repos/amansachdeva21/workflow_validate/actions/workflows/${${{github.workflow_ref}} | awk -F "/" '{print $5}' | awk -F "@" '{print $1}'}
