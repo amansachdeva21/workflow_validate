@@ -11,14 +11,14 @@ jobs:
         run: |
           previous_runs=$(curl -s -H "Authorization: token ${{ secrets.token }}" \
             "https://api.github.com/repos/${{ github.repository }}/actions/runs?status=completed&per_page=5")
-          echo $previous_runs
+          #echo $previous_runs
           # Check the last few pipeline runs
           failed_apply=true
           for run in $(echo "$previous_runs" | jq -r '.workflow_runs[].id'); do
             # Get the status of each run
             run_status=$(curl -s -H "Authorization: token ${{ secrets.token }}" \
               "https://api.github.com/repos/${{ github.repository }}/actions/runs/$run/jobs" | jq -r '.jobs[] | select(.name=="terraform") | .status')
-            
+            echo $run_status
             # Check if terraform apply was successful in this pipeline
             if [[ "$run_status" == "completed" ]]; then
               apply_status=$(curl -s -H "Authorization: token ${{ secrets.token }}" \
