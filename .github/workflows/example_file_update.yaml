@@ -10,11 +10,11 @@ jobs:
         uses: codex-/return-dispatch@v2
         id: return_dispatch
         with:
-          token: ${{ secrets.TOKEN }} # Note this is NOT GITHUB_TOKEN but a PAT
+          token: ${{ secrets.token }} # Note this is NOT GITHUB_TOKEN but a PAT
           ref: target_branch # or refs/heads/target_branch
-          repo: repository-name
-          owner: repository-owner
-          workflow: automation-test.yml
+          repo: workflow_validate
+          #owner: repository-owner
+          workflow: example_file_update.yaml
           workflow_inputs: '{ "some_input": "value" }' # Optional
           workflow_timeout_seconds: 120 # Default: 300
           workflow_job_steps_retry_seconds:
