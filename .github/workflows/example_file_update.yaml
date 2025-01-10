@@ -9,4 +9,4 @@ jobs:
       - name: Use the output run ID and URL
         run: |
           echo ${{ github.workflow }}
-          RUN_ID=$(gh run list --json databaseId --workflow= example_file_update.yaml --limit 1 | jq -r '.[0].databaseId')
+          RUN_ID=$(gh run list --json databaseId --workflow=example_file_update.yaml --limit 1 | jq -r '.[0].databaseId')
