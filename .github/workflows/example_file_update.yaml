@@ -3,9 +3,39 @@ name: test_again
 on: [workflow_dispatch, push, pull_request, issues, deployment_status]
 
 jobs:
-  test:
+  check_previous_pipeline:
     runs-on: ubuntu-latest
     steps:
-      - name: Use the output run ID and URL
+      - name: Get the last 5 workflow runs from GitHub API
+        id: check_previous
         run: |
-          curl -u amansachdeva21:${{ secrets.token }} https://api.github.com/repos/amansachdeva21/workflow_validate/actions/workflows/${${{github.workflow_ref}} | awk -F "/" '{print $5}' | awk -F "@" '{print $1}'}
+          previous_runs=$(curl -s -H "Authorization: token ${{ secrets.token }}" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/runs?status=completed&per_page=5")
+          
+          # Check the last few pipeline runs
+          failed_apply=true
+          for run in $(echo "$previous_runs" | jq -r '.workflow_runs[].id'); do
+            # Get the status of each run
+            run_status=$(curl -s -H "Authorization: token ${{ secrets.token }}" \
+              "https://api.github.com/repos/${{ github.repository }}/actions/runs/$run/jobs" | jq -r '.jobs[] | select(.name=="terraform") | .status')
+            
+            # Check if terraform apply was successful in this pipeline
+            if [[ "$run_status" == "completed" ]]; then
+              apply_status=$(curl -s -H "Authorization: token ${{ secrets.token }}" \
+                "https://api.github.com/repos/${{ github.repository }}/actions/runs/$run/artifacts")
+              
+              if echo "$apply_status" | jq -e '.artifacts[] | select(.name == "terraform-apply-status")' > /dev/null; then
+                apply_status_content=$(curl -s -H "Authorization: token ${{ secrets.token }}" \
+                  "https://api.github.com/repos/${{ github.repository }}/actions/artifacts/$apply_status_id/contents")
+                
+                # Check the file content for terraform apply status
+                apply_result=$(echo "$apply_status_content" | jq -r '.content')
+                if [[ "$apply_result" == "terraform apply succeeded" ]]; then
+                  failed_apply=false
+                  break
+                fi
+              fi
+            fi
+          done
+
+      #curl -u amansachdeva21:${{ secrets.token }} https://api.github.com/repos/amansachdeva21/workflow_validate/actions/workflows/${${{github.workflow_ref}} | awk -F "/" '{print $5}' | awk -F "@" '{print $1}'}
