@@ -6,24 +6,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Dispatch an action and get the run ID and URL
-        uses: codex-/return-dispatch@v2
-        id: return_dispatch
-        with:
-          token: ${{ secrets.token }} # Note this is NOT GITHUB_TOKEN but a PAT
-          ref: target_branch # or refs/heads/target_branch
-          repo: file_update
-          owner: amansachdeva21
-          workflow: example_file_update.yaml
-          #workflow_inputs: '{ "some_input": "value" }' # Optional
-          workflow_timeout_seconds: 120 # Default: 300
-          workflow_job_steps_retry_seconds:
-            # Lineal backoff retry attempts are made where the attempt count is
-            # the magnitude and the scaling value is `workflow_job_steps_retry_seconds`
-            10 # Default: 5
-          distinct_id: 1 # Optional
-    
       - name: Use the output run ID and URL
         run: |
-          echo ${{steps.return_dispatch.outputs.run_id}}
-          echo ${{steps.return_dispatch.outputs.run_url}}
+          echo ${{ github.workflow }}
