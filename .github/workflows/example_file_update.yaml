@@ -11,7 +11,7 @@ jobs:
         run: |
           previous_runs=$(curl -s -H "Authorization: token ${{ secrets.token }}" \
             "https://api.github.com/repos/${{ github.repository }}/actions/runs?status=completed&per_page=5")
-          
+          echo $previous_runs
           # Check the last few pipeline runs
           failed_apply=true
           for run in $(echo "$previous_runs" | jq -r '.workflow_runs[].id'); do
