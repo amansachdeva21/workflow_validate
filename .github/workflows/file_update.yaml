@@ -17,12 +17,6 @@ jobs:
     - name: Send greeting
       run: |- 
         echo ${{github.workflow_id}}/${{github.run_id}}/${{github.workflow_ref}}/${{ github.workflow }}
-        echo "GITHUB_REPOSITORY_OWNER: $GITHUB_REPOSITORY_OWNER"
-        echo "GITHUB_REPOSITORY: $GITHUB_REPOSITORY"
-        echo "github.repository: ${{ github.repository }}"
-        echo "github.repository_owner: ${{ github.repository_owner }}"
-        echo "GITHUB.REPOSITORY: $GITHUB.REPOSITORY"
-        echo "GITHUB.REPOSITORY_OWNER: $GITHUB.REPOSITORY_OWNER"
         #curl -u amansachdeva21:${{secrets.token}} https://api.github.com/repos/amansachdeva21/workflow_validate/actions/workflows/file_update.yaml
       
 
