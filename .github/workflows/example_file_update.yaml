@@ -4,7 +4,7 @@ on: [workflow_dispatch, push, pull_request, issues, deployment_status]
 
 jobs:
   check_previous_pipeline:
-    environment: test
+    #environment: test
     runs-on: ubuntu-latest
     steps:
       - name: Get the last 5 workflow runs from GitHub API
@@ -14,6 +14,7 @@ jobs:
             "https://api.github.com/repos/${{ github.repository }}/actions/runs?status=completed&per_page=5")
           # Check the last few pipeline runs
           failed_apply=true
+          echo "$previous_runs" | jq -r '.workflow_runs[].id'
           for run in $(echo "$previous_runs" | jq -r '.workflow_runs[].id'); do
             # Get the status of each run
             run_status=$(curl -s -H "Authorization: token ${{ secrets.token }}" \
