@@ -10,12 +10,16 @@ jobs:
         run: |
           # Get the current workflow name (this is your workflow file name, e.g., 'CI')
           workflow_name="${{ github.workflow }}"
+          echo ${workflow_name}
+          echo $workflow_name
           
           # Define the API URL to list all workflow runs (this includes all run_ids under the workflow)
           api_url="https://api.github.com/repos/${{ github.repository }}/actions/workflows/${workflow_name}.yml/runs"
+          echo $api_url
 
           # Fetch the list of runs for this workflow using GitHub API
           response=$(curl -s -H "Authorization: token ${{ secrets.token }}" "$api_url")
+          echo $response
           
           # Extract the workflow ID (it's a part of the URL, so this uses the `workflow` name here)
           workflow_id=$(echo "$response" | jq -r '.workflow_runs[0].workflow_id')
