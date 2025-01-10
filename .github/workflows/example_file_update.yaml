@@ -3,39 +3,31 @@ name: test_again
 on: [workflow_dispatch, push, pull_request, issues, deployment_status]
 
 jobs:
-  check_previous_pipeline:
-    #environment: test
+  list_previous_runs:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Get the last 5 workflow runs from GitHub API
-        id: check_previous
+      - name: Get all workflow run ids
+        id: get_runs
         run: |
-          previous_runs=$(curl -s -H "Authorization: token ${{ secrets.token }}" \
-            "https://api.github.com/repos/${{ github.repository }}/actions/runs?status=completed&per_page=5")
-          # Check the last few pipeline runs
-          failed_apply=true
-          echo "$previous_runs" | jq -r '.workflow_runs[].id'
-          for run in $(echo "$previous_runs" | jq -r '.workflow_runs[].id'); do
-            # Get the status of each run
-            run_status=$(curl -s -H "Authorization: token ${{ secrets.token }}" \
-              "https://api.github.com/repos/${{ github.repository }}/actions/runs/$run/jobs" | jq -r '.jobs[] | select(.name=="terraform") | .status')
-            echo $run_status
-            # Check if terraform apply was successful in this pipeline
-            if [[ "$run_status" == "completed" ]]; then
-              apply_status=$(curl -s -H "Authorization: token ${{ secrets.token }}" \
-                "https://api.github.com/repos/${{ github.repository }}/actions/runs/$run/artifacts")
-              
-              if echo "$apply_status" | jq -e '.artifacts[] | select(.name == "terraform-apply-status")' > /dev/null; then
-                apply_status_content=$(curl -s -H "Authorization: token ${{ secrets.token }}" \
-                  "https://api.github.com/repos/${{ github.repository }}/actions/artifacts/$apply_status_id/contents")
-                
-                # Check the file content for terraform apply status
-                apply_result=$(echo "$apply_status_content" | jq -r '.content')
-                if [[ "$apply_result" == "terraform apply succeeded" ]]; then
-                  failed_apply=false
-                  break
-                fi
-              fi
-            fi
-          done
-      #curl -u amansachdeva21:${{ secrets.token }} https://api.github.com/repos/amansachdeva21/workflow_validate/actions/workflows/${${{github.workflow_ref}} | awk -F "/" '{print $5}' | awk -F "@" '{print $1}'}
+          # Set the API endpoint to get all workflow runs for the current repository
+          api_url="https://api.github.com/repos/${{ github.repository }}/actions/runs?per_page=100"
+          
+          # Fetch the workflow runs
+          response=$(curl -s -H "Authorization: token ${{ secrets.token }}" "$api_url")
+
+          # Parse the run_ids from the response
+          run_ids=$(echo "$response" | jq -r '.workflow_runs[].id')
+
+          # Output the list of run_ids
+          echo "List of all run_ids: $run_ids"
+
+          # Set run_ids as an output variable to be used in later steps
+          echo "::set-output name=run_ids::$run_ids"
+
+      - name: Show run_ids
+        run: |
+          echo "Previous run_ids: ${{ steps.get_runs.outputs.run_ids }}"
+
+
+  #curl -u amansachdeva21:${{ secrets.token }} https://api.github.com/repos/amansachdeva21/workflow_validate/actions/workflows/${${{github.workflow_ref}} | awk -F "/" '{print $5}' | awk -F "@" '{print $1}'}
