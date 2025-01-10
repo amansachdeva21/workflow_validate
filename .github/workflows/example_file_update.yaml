@@ -1,0 +1,26 @@
+name: test_again
+
+on: [workflow_dispatch, push, pull_request, issues, deployment_status]
+
+steps:
+  - name: Dispatch an action and get the run ID and URL
+    uses: codex-/return-dispatch@v2
+    id: return_dispatch
+    with:
+      token: ${{ secrets.TOKEN }} # Note this is NOT GITHUB_TOKEN but a PAT
+      ref: target_branch # or refs/heads/target_branch
+      repo: repository-name
+      owner: repository-owner
+      workflow: automation-test.yml
+      workflow_inputs: '{ "some_input": "value" }' # Optional
+      workflow_timeout_seconds: 120 # Default: 300
+      workflow_job_steps_retry_seconds:
+        # Lineal backoff retry attempts are made where the attempt count is
+        # the magnitude and the scaling value is `workflow_job_steps_retry_seconds`
+        10 # Default: 5
+      distinct_id: someDistinctId # Optional
+
+  - name: Use the output run ID and URL
+    run: |
+      echo ${{steps.return_dispatch.outputs.run_id}}
+      echo ${{steps.return_dispatch.outputs.run_url}}
