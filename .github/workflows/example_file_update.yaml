@@ -4,10 +4,10 @@ on: [workflow_dispatch, push, pull_request, issues, deployment_status]
 
 jobs:
   check_previous_pipeline:
+    environment: test
     runs-on: ubuntu-latest
     steps:
       - name: Get the last 5 workflow runs from GitHub API
-        environment: test
         id: check_previous
         run: |
           previous_runs=$(curl -s -H "Authorization: token ${{ secrets.token }}" \
