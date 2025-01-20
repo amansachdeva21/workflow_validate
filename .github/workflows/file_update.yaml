@@ -16,7 +16,8 @@ jobs:
     steps:
     - name: Send greeting
       run: |- 
-        echo ${{github.workflow_id}}/${{github.run_id}}/${{github.workflow_ref}}/${{ github.workflow }}
+        echo "test"
+        #echo ${{github.workflow_id}}/${{github.run_id}}/${{github.workflow_ref}}/${{ github.workflow }}
         #curl -u amansachdeva21:${{secrets.token}} https://api.github.com/repos/amansachdeva21/workflow_validate/actions/workflows/file_update.yaml
       
 
