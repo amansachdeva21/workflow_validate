@@ -1,6 +1,6 @@
 name: test_again
 
-on: [workflow_dispatch, push, pull_request, issues, deployment_status]
+#on: [workflow_dispatch, push, pull_request, issues, deployment_status]
 
 jobs:
   fetch-workflow-info:
