@@ -28,4 +28,4 @@ jobs:
     steps:
     - name: Send greeting
       run: |- 
-        echo "test2"
+        echo "test22"
