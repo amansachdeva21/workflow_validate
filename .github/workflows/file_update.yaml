@@ -24,13 +24,13 @@ jobs:
 
 
   greet2:
-    #environment: test
+    environment: test
     runs-on: ubuntu-latest
 
     steps:
     - name: Check branch
       run: |
-        if [[ "${{ github.ref }}" != "refs/heads/main" ]]; then
+        if [[ "${{ github.ref }}" != "refs/heads/file_update" ]]; then
           echo "⚠️ Terraform Plan can only be run on the 'main' branch. Exiting..."
           exit 1
         fi
