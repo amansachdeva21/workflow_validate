@@ -22,8 +22,9 @@ jobs:
         #curl -u amansachdeva21:${{secrets.token}} https://api.github.com/repos/amansachdeva21/workflow_validate/actions/workflows/file_update.yaml
 
   greet2:
-    #if: github.ref == 'refs/heads/main'
-    environment: test
+    if: github.ref == 'refs/heads/main'
+    run: echo "⚠️ This job only runs on the main branch."
+    #environment: test
     runs-on: ubuntu-latest
 
     steps:
