@@ -37,4 +37,5 @@ jobs:
           fi
 
       - name: Print Detected Working Directory
-        run: echo "Working Directory: ${{ env.WORKING_DIRECTORY }}"
+        run: |
+          echo "Working Directory: ${{ env.WORKING_DIRECTORY }}"
