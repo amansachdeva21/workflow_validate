@@ -21,4 +21,4 @@ jobs:
 
       - name: Print Selected Environment
         run: |
-          echo "User selected environment: ${{ github.event.inputs.environment }}"
+          ${{ github.event.inputs.environment }}"
