@@ -1,4 +1,4 @@
-name: User Input for Cloud Run Directory
+name: Set Working Directory Based on User Input
 
 on:
   workflow_dispatch:
@@ -12,13 +12,16 @@ on:
           - prod
 
 jobs:
-  detect-environment:
+  set-working-directory:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Print Selected Environment
+      - name: Use Working Directory Based on Input
+        working-directory: cloudrun/${{ github.event.inputs.environment }}
         run: |
-          ${{ github.event.inputs.environment }}"
+          echo "Selected Working Directory: cloudrun/${{ github.event.inputs.environment }}"
+          # Perform your actions here
+          echo "Current directory: $(pwd)"
