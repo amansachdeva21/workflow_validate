@@ -1,43 +1,24 @@
-name: Detect Cloud Run Folder Change
+name: User Input for Cloud Run Directory
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - "cloudrun/dev/**"
-      - "cloudrun/prod/**"
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Select the environment (dev or prod)'
+        required: true
+        type: choice
+        options:
+          - dev
+          - prod
 
 jobs:
-  detect-changes:
+  detect-environment:
     runs-on: ubuntu-latest
-
-    permissions:  # Needed for Workload Identity
-      contents: write
-      id-token: write
-      issues: write
-      pull-requests: write
-      statuses: write
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Fetch Commit History
-        run: git fetch --prune --unshallow
-
-      - name: Detect Changed Folder
-        id: check-folder
+      - name: Print Selected Environment
         run: |
-          CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD)
-          if echo "$CHANGED_FILES" | grep -q '^cloudrun/dev/'; then
-            echo "WORKING_DIRECTORY=cloudrun/dev" >> $GITHUB_ENV
-          elif echo "$CHANGED_FILES" | grep -q '^cloudrun/prod/'; then
-            echo "WORKING_DIRECTORY=cloudrun/prod" >> $GITHUB_ENV
-          else
-            echo "No relevant changes detected."
-            exit 0
-          fi
-
-      - name: Print Detected Working Directory
-        run: echo "Working Directory: ${{ env.WORKING_DIRECTORY }}"
+          echo "User selected environment: ${{ github.event.inputs.environment }}"
