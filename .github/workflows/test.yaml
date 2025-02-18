@@ -23,10 +23,13 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Fetch Commit History
+        run: git fetch --prune --unshallow
+
       - name: Detect Changed Folder
         id: check-folder
         run: |
-          CHANGED_FILES=$(git diff --name-only HEAD^ HEAD)
+          CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD)
           if echo "$CHANGED_FILES" | grep -q '^cloudrun/dev/'; then
             echo "WORKING_DIRECTORY=cloudrun/dev" >> $GITHUB_ENV
           elif echo "$CHANGED_FILES" | grep -q '^cloudrun/prod/'; then
@@ -37,5 +40,4 @@ jobs:
           fi
 
       - name: Print Detected Working Directory
-        run: |
-          echo "Working Directory: ${{ env.WORKING_DIRECTORY }}"
+        run: echo "Working Directory: ${{ env.WORKING_DIRECTORY }}"
