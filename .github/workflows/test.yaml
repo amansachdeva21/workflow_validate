@@ -26,9 +26,9 @@ jobs:
       - name: Detect Changed Folder
         id: check-folder
         run: |
-          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q '^cloudrun/dev/'; then
+          if git diff --name-only HEAD^ HEAD | grep -q '^cloudrun/dev/'; then
             echo "WORKING_DIRECTORY=cloudrun/dev" >> $GITHUB_ENV
-          elif git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q '^cloudrun/prod/'; then
+          elif git diff --name-only HEAD^ HEAD | grep -q '^cloudrun/prod/'; then
             echo "WORKING_DIRECTORY=cloudrun/prod" >> $GITHUB_ENV
           else
             echo "No relevant changes detected."
